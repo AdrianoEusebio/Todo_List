@@ -1,7 +1,7 @@
 services:
-  todo.database:
+  Database:
     image: postgres:latest
-    container_name: todo.database
+    container_name: Database
     restart: always
     environment:
       POSTGRES_DB: todo_db
@@ -16,20 +16,20 @@ services:
       interval: 5s
       retries: 5   
 
-  todo.api:
+  Backend:
     image: ${DOCKER_REGISTRY-}todoapi
-    container_name: todo.api
+    container_name: Backend
     build:
-      context: .
-      dockerfile: Backend/To-do_list_api/Dockerfile
+      context: ./Backend
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     environment:
-      - ConectionsStrings:Host=todo.database;Database=todo_db;Username=postgres;Password=postgres
+      - ConectionsStrings:Host=Database;Database=todo_db;Username=postgres;Password=postgres
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8000
     depends_on:
-      todo.database:
+      Database:
         condition: service_healthy
      
 volumes:
