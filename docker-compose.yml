@@ -31,6 +31,8 @@ services:
     depends_on:
       Database:
         condition: service_healthy
+    volumes:
+      - .:/Backend   
      
 volumes:
   postgres_data:
